@@ -1,0 +1,15 @@
+org\example\web\controllers\GlossControllerImpl.class
+org\example\web\dto\WordId.class
+org\example\app\service\exceptions\BookShelfLoginException.class
+org\example\app\service\StorageImpl.class
+org\example\web\controllers\ErrorController.class
+org\example\web\controllers\GlossController.class
+org\example\WebAppInitializer.class
+org\example\app\service\Storage.class
+org\example\web\dto\GlossaryImpl.class
+org\example\web\config\WebContextConfig.class
+org\example\app\service\AppImpl.class
+org\example\web\dto\Glossary.class
+org\example\web\dto\WordImpl.class
+org\example\web\dto\Word.class
+org\example\app\service\App.class

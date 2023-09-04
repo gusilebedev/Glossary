@@ -1,0 +1,47 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <title>Search Result</title>
+    <style>
+        #root_container{
+            position: absolute;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        table {
+            margin: 25px;
+        }
+        th{
+            text-align: left;
+        }
+        th,td{
+            border-bottom: 1px solid #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div id="root_container"  >
+    <div>
+        <form method="GET" th:action="@{/glossaries/glossary}">
+            <td>
+                <input type="submit" value="back">
+            </td>
+        </form>
+    </div>
+    <div align="center">
+        <h2>Search Result</h2>
+        <img class=+"login_item" th:src="@{/images/search_image.jpg}">
+    </div>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>слово - определение</th>
+        </tr>
+        <tr th:each="word : ${wordsList}">
+            <td th:text="${searchWord + ' - ' + word.value}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

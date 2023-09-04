@@ -1,0 +1,89 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <title>Dictionary</title>
+    <style>
+        #root_container{
+            position: absolute;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        table {
+            margin: 25px;
+        }
+        th{
+            text-align: left;
+        }
+        th,td{
+            border-bottom: 1px solid #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div id="root_container"  >
+    <div>
+        <form method="GET" th:action="@{/glossaries/shelf}">
+            <td>
+                <input type="submit" value="back">
+            </td>
+        </form>
+    </div>
+
+    <div align="center">
+        <h2><td th:text="${gloss}"></td></h2>
+        <img class="login_item" th:src="@{/images/gloss_image.jpg}">
+    </div>
+
+    <form method="POST"  th:action="@{/glossaries/glossary/save}">
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>
+                    <input type="text" placeholder="Слово" th:name="wordName">
+                    <input type="text" placeholder="Определение" th:name="wordValue">
+                </td>
+                <td>
+                    <input type="submit" value="save">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="POST" th:action="@{/glossaries/glossary/remove}">
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>
+                    <input type="text" placeholder="Cлово" th:name="wordNameToRemove">
+                </td>
+                <td>
+                    <input type="submit" value="remove">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="POST" th:action="@{/glossaries/glossary/search}">
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>
+                    <input type="text" placeholder="Cлово" th:name="wordNameToSearch">
+                </td>
+                <td>
+                    <input type="submit" value="search">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>слово - определение</th>
+            </tr>
+            <tr th:each="word : ${wordsList}">
+                <td th:text="${word.value}"></td>
+            </tr>
+        </table>
+</div>
+</body>
+</html>
