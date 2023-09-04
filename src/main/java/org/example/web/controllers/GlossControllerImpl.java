@@ -31,6 +31,7 @@ public class GlossControllerImpl implements GlossController {
         logger.info("glossaries shelf");
         model.addAttribute("glossary", new GlossaryImpl());
         model.addAttribute("glossList", storage.getAllGross());
+        // faefaea
         return "glossaries_shelf";
     }
 
