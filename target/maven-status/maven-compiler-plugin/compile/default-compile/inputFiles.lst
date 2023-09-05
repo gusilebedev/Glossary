@@ -1,15 +1,15 @@
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\config\WebContextConfig.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\controllers\GlossController.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\app\service\App.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\dto\GlossaryImpl.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\app\service\StorageImpl.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\controllers\GlossControllerImpl.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\dto\Glossary.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\WebAppInitializer.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\dto\WordId.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\dto\WordImpl.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\controllers\ErrorController.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\web\dto\Word.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\app\service\exceptions\BookShelfLoginException.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\app\service\AppImpl.java
-C:\Users\lebedev.sv.kst\IdeaProjects\glossary\src\main\java\org\example\app\service\Storage.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\dto\WordId.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\controllers\GlossController.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\app\service\App.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\dto\GlossaryImpl.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\app\service\exceptions\BookShelfLoginException.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\WebAppInitializer.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\config\WebContextConfig.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\dto\WordImpl.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\dto\Glossary.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\dto\Word.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\controllers\ErrorController.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\app\service\Storage.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\app\service\StorageImpl.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\web\controllers\GlossControllerImpl.java
+C:\Users\lebedev.sv.kst\IdeaProjects\github\Spring MVC\glossary\src\main\java\org\example\app\service\AppImpl.java
