@@ -15,14 +15,14 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.List;
 
-@Repository
+
 public class StorageImpl implements Storage {
 
     private AppImpl app;
-    private List<GlossaryImpl> glossaries;
-    private GlossaryImpl activeGlossary;
+    private List<Glossary> glossaries;
+    private Glossary activeGlossary;
 
-    @Autowired
+
     public StorageImpl(AppImpl app) {
         this.app = app;
         this.glossaries = new ArrayList<>();
@@ -30,18 +30,17 @@ public class StorageImpl implements Storage {
 
 
     @Override
-    @PostConstruct
     public boolean startGlossary() {
         try {
             Session session = app.session();
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery query = builder.createQuery(GlossaryImpl.class);
-            Root<GlossaryImpl> root = query.from(GlossaryImpl.class);
+            CriteriaQuery query = builder.createQuery(Glossary.class);
+            Root<Glossary> root = query.from(Glossary.class);
             query.select(root);
-            List<GlossaryImpl> glossaryImplList = session.createQuery(query).getResultList();
-            for (GlossaryImpl glossaryImpl : glossaryImplList) {
-                parseGloss(glossaryImpl);
-                glossaries.add(glossaryImpl);
+            List<Glossary> glossaryList = session.createQuery(query).getResultList();
+            for (Glossary glossary : glossaryList) {
+                parseGloss(glossary);
+                glossaries.add(glossary);
             }
             session.close();
             return true;
@@ -50,15 +49,15 @@ public class StorageImpl implements Storage {
         }
     }
 
-    public void parseGloss(GlossaryImpl glossary) {
+    public void parseGloss(Glossary glossary) {
         try {
             Session session = app.session();
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery query = builder.createQuery(WordImpl.class);
-            Root<WordImpl> root = query.from(WordImpl.class);
+            CriteriaQuery query = builder.createQuery(Word.class);
+            Root<Word> root = query.from(Word.class);
             query.select(root);
-            List<WordImpl> wordImplList = session.createQuery(query).getResultList();
-            for (WordImpl word : wordImplList) {
+            List<Word> wordList = session.createQuery(query).getResultList();
+            for (Word word : wordList) {
                 if (word.getId().getGlossary().getNameGloss().equals(glossary.getNameGloss())) {
                     glossary.addWord(word);
                 }
@@ -77,7 +76,7 @@ public class StorageImpl implements Storage {
             if (searchListGloss(name) == null) {
                 Session session = app.session();
                 Transaction transaction = session.beginTransaction();
-                GlossaryImpl glossaryImpl = new GlossaryImpl();
+                Glossary glossaryImpl = new Glossary();
                 glossaryImpl.setNameGloss(name);
                 glossaryImpl.setRegex(regex);
                 session.save(glossaryImpl);
@@ -98,8 +97,8 @@ public class StorageImpl implements Storage {
             if (searchListGloss(name) != null) {
                 Session session = app.session();
                 Transaction transaction = session.beginTransaction();
-                GlossaryImpl glossaryImpl = session.get(GlossaryImpl.class, name);
-                session.remove(glossaryImpl);
+                Glossary glossary = session.get(Glossary.class, name);
+                session.remove(glossary);
                 transaction.commit();
                 session.close();
                 glossaries.remove(searchListGloss(name));
@@ -118,7 +117,7 @@ public class StorageImpl implements Storage {
             String name = word.getName().trim().toLowerCase();
             String value = word.getValue().toLowerCase();
             if (!activeGlossary.containsCheck(name)) {
-                WordImpl wordImpl = new WordImpl();
+                Word wordImpl = new Word();
                 WordId wordId = new WordId();
                 wordId.setName(name);
                 wordId.setGlossary(activeGlossary);
@@ -147,8 +146,8 @@ public class StorageImpl implements Storage {
             if (activeGlossary.containsCheck(line)) {
                 Session session = app.session();
                 Transaction transaction = session.beginTransaction();
-                WordImpl wordImpl = session.get(WordImpl.class, activeGlossary.getWord(line).getId());
-                session.remove(wordImpl);
+                Word word = session.get(Word.class, activeGlossary.getWord(line).getId());
+                session.remove(word);
                 transaction.commit();
                 session.close();
                 activeGlossary.delWord(line);
@@ -162,8 +161,8 @@ public class StorageImpl implements Storage {
 
 
     @Override
-    public GlossaryImpl searchListGloss(String name) {
-        for (GlossaryImpl glossary : glossaries) {
+    public Glossary searchListGloss(String name) {
+        for (Glossary glossary : glossaries) {
             if (glossary.getNameGloss().equals(name)) {
                 return glossary;
             }
@@ -173,7 +172,7 @@ public class StorageImpl implements Storage {
 
     @Override
     public boolean containsGrossList(String name) {
-        for (GlossaryImpl glossary : glossaries) {
+        for (Glossary glossary : glossaries) {
             if (glossary.getNameGloss().equals(name)) {
                 return true;
             }
@@ -188,7 +187,7 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public WordImpl getWordValue(String line) {
+    public Word getWordValue(String line) {
         if (activeGlossary.containsCheck(line)) {
             return activeGlossary.getWord(line);
         }
@@ -196,7 +195,7 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public GlossaryImpl getActiveGlossary() {
+    public Glossary getActiveGlossary() {
         return activeGlossary;
     }
 

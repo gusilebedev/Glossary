@@ -13,7 +13,7 @@
         <property name="current_session_context_class">thread</property>
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping class="org.example.app.service.dao.GlossaryImpl"></mapping>
-        <mapping class="org.example.app.service.dao.WordImpl"></mapping>
+        <mapping class="org.example.app.service.dao.Glossary"></mapping>
+        <mapping class="org.example.app.service.dao.Word"></mapping>
     </session-factory>
 </hibernate-configuration>

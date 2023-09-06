@@ -9,10 +9,10 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class AppImpl implements App{
 
-    @Value("hibernate.cfg.xml")
+
     private String path;
 
     @Override

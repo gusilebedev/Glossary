@@ -1,14 +1,16 @@
 package org.example.app.service.dao;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "words", schema = "glossary_box")
-public class WordImpl {
+public class Word {
 
     @EmbeddedId
     private WordId id;
