@@ -1,13 +1,14 @@
 package org.example.app.service;
 
-import org.example.web.dto.Glossary;
-import org.example.web.dto.GlossaryImpl;
-import org.example.web.dto.Word;
+import org.example.app.service.dao.GlossaryImpl;
+import org.example.app.service.dao.WordImpl;
+import org.example.web.dto.GlossaryToView;
+import org.example.web.dto.WordToView;
 
 import java.util.List;
 
 public interface Storage {
-    Glossary searchListGloss(String name);
+    GlossaryImpl searchListGloss(String name);
 
     boolean containsGrossList(String name);
 
@@ -15,17 +16,17 @@ public interface Storage {
 
     boolean startGlossary();
 
-    boolean addGlossary(GlossaryImpl glossary);
+    boolean addGlossary(GlossaryToView glossary);
 
     boolean delGlossary(String name);
 
-    boolean addWordValue(String line);
+    boolean addWordValue(WordToView word);
 
     boolean delWordValue(String line);
 
-    Word getWordValue(String line);
+    WordImpl getWordValue(String line);
 
-    Glossary getActiveGlossary();
+    GlossaryImpl getActiveGlossary();
 
     List getAllGross();
 }

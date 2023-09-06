@@ -1,17 +1,17 @@
 package org.example.app.service;
 
-import jakarta.persistence.Converter;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.example.web.dto.*;
+import org.example.app.service.dao.*;
+import org.example.web.dto.GlossaryToView;
+import org.example.web.dto.WordToView;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
@@ -70,9 +70,9 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public boolean addGlossary(GlossaryImpl glossary) {
+    public boolean addGlossary(GlossaryToView glossary) {
         try {
-            String name = glossary.getNameGloss().trim();
+            String name = glossary.getName().trim();
             String regex = glossary.getRegex().trim();
             if (searchListGloss(name) == null) {
                 Session session = app.session();
@@ -113,11 +113,10 @@ public class StorageImpl implements Storage {
 
 
     @Override
-    public boolean addWordValue(String line) {
-        String[] word = line.split("\\s");
+    public boolean addWordValue(WordToView word) {
         try {
-            String name = word[0].trim().toLowerCase();
-            String value = word[1].trim().toLowerCase();
+            String name = word.getName().trim().toLowerCase();
+            String value = word.getValue().toLowerCase();
             if (!activeGlossary.containsCheck(name)) {
                 WordImpl wordImpl = new WordImpl();
                 WordId wordId = new WordId();
@@ -174,7 +173,7 @@ public class StorageImpl implements Storage {
 
     @Override
     public boolean containsGrossList(String name) {
-        for (Glossary glossary : glossaries) {
+        for (GlossaryImpl glossary : glossaries) {
             if (glossary.getNameGloss().equals(name)) {
                 return true;
             }
@@ -189,7 +188,7 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public Word getWordValue(String line) {
+    public WordImpl getWordValue(String line) {
         if (activeGlossary.containsCheck(line)) {
             return activeGlossary.getWord(line);
         }
@@ -197,7 +196,7 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public Glossary getActiveGlossary() {
+    public GlossaryImpl getActiveGlossary() {
         return activeGlossary;
     }
 

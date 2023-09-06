@@ -31,7 +31,7 @@
              <table border="1" cellpadding="5">
                  <tr>
                      <td>
-                         <input type="text" placeholder="Имя" th:field="*{nameGloss}">
+                         <input type="text" placeholder="Имя" th:field="*{name}">
                      </td>
                      <td>
                          <input type="text" placeholder="Regex" th:field="*{regex}">
@@ -43,11 +43,11 @@
              </table>
          </form>
 
-         <form method="post" th:action="@{/glossaries/remove}">
+         <form method="post" th:action="@{/glossaries/remove}" th:object="${glossary}">
              <table border="1" cellpadding="5">
                  <tr>
                      <td>
-                         <input type="text" placeholder="Имя" th:name="glossaryNameToRemove">
+                         <input type="text" placeholder="Имя" th:field="*{name}">
                      </td>
                      <td>
                          <input type="submit" value="remove">
@@ -56,11 +56,11 @@
              </table>
          </form>
 
-         <form method="post" th:action="@{/glossaries/get}">
+         <form method="post" th:action="@{/glossaries/get}" th:object="${glossary}">
              <table border="1" cellpadding="5">
                  <tr>
                      <td>
-                         <input type="text" placeholder="Имя" th:name="glossaryName">
+                         <input type="text" placeholder="Имя" th:field="*{name}">
                      </td>
                      <td>
                          <input type="submit" value="  get  ">

@@ -36,12 +36,14 @@
         <img class="login_item" th:src="@{/images/gloss_image.jpg}">
     </div>
 
-    <form method="POST"  th:action="@{/glossaries/glossary/save}">
+    <form method="POST"  th:action="@{/glossaries/glossary/save}" th:object="${word}">
         <table border="1" cellpadding="5">
             <tr>
                 <td>
-                    <input type="text" placeholder="Слово" th:name="wordName">
-                    <input type="text" placeholder="Определение" th:name="wordValue">
+                    <input type="text" placeholder="Слово" th:field="*{name}">
+                </td>
+                <td>
+                    <input type="text" placeholder="Определение" th:field="*{value}">
                 </td>
                 <td>
                     <input type="submit" value="save">
@@ -50,11 +52,11 @@
         </table>
     </form>
 
-    <form method="POST" th:action="@{/glossaries/glossary/remove}">
+    <form method="POST" th:action="@{/glossaries/glossary/remove}" th:object="${word}">
         <table border="1" cellpadding="5">
             <tr>
                 <td>
-                    <input type="text" placeholder="Cлово" th:name="wordNameToRemove">
+                    <input type="text" placeholder="Cлово" th:field="*{name}">
                 </td>
                 <td>
                     <input type="submit" value="remove">
@@ -63,11 +65,11 @@
         </table>
     </form>
 
-    <form method="POST" th:action="@{/glossaries/glossary/search}">
+    <form method="POST" th:action="@{/glossaries/glossary/search}" th:object="${word}">
         <table border="1" cellpadding="5">
             <tr>
                 <td>
-                    <input type="text" placeholder="Cлово" th:name="wordNameToSearch">
+                    <input type="text" placeholder="Cлово" th:field="*{name}">
                 </td>
                 <td>
                     <input type="submit" value="search">

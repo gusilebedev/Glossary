@@ -1,54 +1,32 @@
-package org.example.web.dto;
+package org.example.app.service.dao;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "glossaries", schema = "glossary_box")
-public class GlossaryImpl implements Glossary {
+public class GlossaryImpl {
 
     @Id
     private String nameGloss;
     private String regex;
     @Transient
-    private Map<String, Word> map;
+    private Map<String, WordImpl> map;
 
     public GlossaryImpl() {
         this.map = new TreeMap<>();
     }
 
-    @Override
-    public String getNameGloss() {
-        return nameGloss;
-    }
-
-    @Override
-    public String getRegex() {
-        return regex;
-    }
-
-    @Override
-    public Map getGloss() {
-        return map;
-    }
-
-    @Override
-    public void setNameGloss(String name) {
-        this.nameGloss = name;
-    }
-
-    @Override
-    public void setRegex(String regex) {
-        this.regex = regex;
-    }
-
-    @Override
-    public boolean addWord(Word word) {
+    public boolean addWord(WordImpl word) {
         if (validatedLine(word.getId().getName())) {
             map.put(word.getId().getName(), word);
             return true;
@@ -56,18 +34,20 @@ public class GlossaryImpl implements Glossary {
         return false;
     }
 
-    @Override
     public boolean delWord(String word) {
         map.remove(word);
         return true;
     }
 
-    @Override
-    public Word getWord(String word) {
+
+    public WordImpl getWord(String word) {
         return map.get(word);
     }
+    public Map getGloss() {
+        return map;
+    }
 
-    @Override
+
     public boolean containsCheck(String word) {
         if (map.containsKey(word)) {
             return true;
@@ -75,7 +55,7 @@ public class GlossaryImpl implements Glossary {
         return false;
     }
 
-    @Override
+
     public boolean validatedLine(String line) {
         String regex = getRegex();
         if (line.matches(regex)) {
@@ -84,7 +64,7 @@ public class GlossaryImpl implements Glossary {
         return false;
     }
 
-    @Override
+
     public String toString() {
         return nameGloss + " " + regex;
     }
