@@ -24,4 +24,6 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         model.addAttribute("urlToBack", exception.getUrl());
         return "error";
     }
+
+    
 }

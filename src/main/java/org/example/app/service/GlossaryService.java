@@ -37,8 +37,8 @@ public class GlossaryService {
 
     public boolean saveGlossary(GlossaryToView glossaryToView) {
         Glossary glossary = new Glossary();
-        glossary.setNameGloss(glossaryToView.getName());
-        glossary.setRegex(glossaryToView.getRegex());
+        glossary.setNameGloss(glossaryToView.getName().trim().toLowerCase());
+        glossary.setRegex(glossaryToView.getRegex().trim());
         glossariesRepository.save(glossary);
         return true;
     }
@@ -48,21 +48,21 @@ public class GlossaryService {
     }
 
     public Glossary getGlossary(GlossaryToView glossaryToView) {
-        return glossariesRepository.findById(glossaryToView.getName()).get();
+        return glossariesRepository.findById(glossaryToView.getName().trim().toLowerCase()).get();
     }
 
     public boolean deleteGlossary(GlossaryToView glossaryToView) {
-        glossariesRepository.deleteById(glossaryToView.getName());
+        glossariesRepository.deleteById(glossaryToView.getName().trim().toLowerCase());
         return true;
     }
 
     public boolean saveWord(WordToView wordToView) {
         WordId wordId = new WordId();
-        wordId.setName(wordToView.getName());
+        wordId.setName(wordToView.getName().trim().toLowerCase());
         wordId.setGlossary(getActiveGlossary());
         Word word = new Word();
         word.setId(wordId);
-        word.setValue(wordToView.getValue());
+        word.setValue(wordToView.getValue().trim().toLowerCase());
         wordsRepository.save(word);
         return true;
     }
@@ -73,14 +73,14 @@ public class GlossaryService {
 
     public Word getWord(WordToView wordToView) {
         WordId wordId = new WordId();
-        wordId.setName(wordToView.getName());
+        wordId.setName(wordToView.getName().trim().toLowerCase());
         wordId.setGlossary(getActiveGlossary());
         return wordsRepository.findById(wordId).get();
     }
 
     public boolean deleteWord(WordToView wordToView) {
         WordId wordId = new WordId();
-        wordId.setName(wordToView.getName());
+        wordId.setName(wordToView.getName().trim().toLowerCase());
         wordId.setGlossary(getActiveGlossary());
         wordsRepository.deleteById(wordId);
         return true;

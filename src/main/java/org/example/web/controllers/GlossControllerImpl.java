@@ -1,8 +1,8 @@
 package org.example.web.controllers;
 
+import jakarta.persistence.NoResultException;
 import org.apache.log4j.Logger;
 import org.example.app.service.GlossaryService;
-import org.example.app.service.Storage;
 import org.example.app.service.dao.Word;
 import org.example.app.service.exceptions.BookShelfLoginException;
 import org.example.web.dto.GlossaryToView;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping(value = "glossaries")
@@ -90,14 +92,17 @@ public class GlossControllerImpl implements GlossController {
 
     @RequestMapping("/glossary/search")
     public String searchWord(Model model, WordToView word) throws BookShelfLoginException {
-        Word word1 = service.getWord(word);
-        if (!word.getName().isEmpty() && word1 != (null) ) {
-            model.addAttribute("searchWord", word.getName());
-            model.addAttribute("word", new WordToView());
-            model.addAttribute("wordsList", word1);
-            return "search_result";
-        } else {
-            throw new BookShelfLoginException("Ошибка ввода либо слово не найдено!","/glossaries/glossary");
+        try {
+            if (!word.getName().isEmpty()) {
+                model.addAttribute("searchWord", word.getName());
+                model.addAttribute("word", new WordToView());
+                model.addAttribute("wordsList", service.getWord(word));
+                return "search_result";
+            } else {
+                throw new BookShelfLoginException("Введите слово для поиска!","/glossaries/glossary");
+            }
+        } catch (NoSuchElementException exception) {
+            throw new BookShelfLoginException("Cлово не найдено!","/glossaries/glossary");
         }
     }
 }
