@@ -18,7 +18,7 @@ import java.util.TreeMap;
 public class GlossaryEntity {
 
     @Id
-    private String nameGloss;
+    private String name;
     private String regex;
     @Transient
     private Map<String, WordEntity> map;
@@ -67,7 +67,7 @@ public class GlossaryEntity {
 
 
     public String toString() {
-        return nameGloss + " " + regex;
+        return name + " " + regex;
     }
 }
 
