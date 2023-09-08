@@ -1,13 +1,14 @@
 package org.example.web.controllers;
 
-import jakarta.persistence.NoResultException;
+
 import org.apache.log4j.Logger;
 import org.example.app.service.GlossaryService;
-import org.example.app.service.dao.Word;
+import org.example.app.service.dao.WordEntity;
 import org.example.app.service.exceptions.BookShelfLoginException;
-import org.example.web.dto.GlossaryToView;
-import org.example.web.dto.WordToView;
+import org.example.web.dto.GlossaryDto;
+import org.example.web.dto.WordDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping(value = "glossaries")
+@Scope("singleton")
 public class GlossControllerImpl implements GlossController {
 
     private Logger logger = Logger.getLogger(GlossControllerImpl.class);
@@ -32,13 +34,13 @@ public class GlossControllerImpl implements GlossController {
     @GetMapping("/shelf")
     public String glossaries(Model model) {
         logger.info("glossaries shelf");
-        model.addAttribute("glossary", new GlossaryToView());
+        model.addAttribute("glossary", new GlossaryDto());
         model.addAttribute("glossList", service.listAllGlossaries());
         return "glossaries_shelf";
     }
 
     @PostMapping("/save")
-    public String saveGlossary(GlossaryToView glossary) throws BookShelfLoginException {
+    public String saveGlossary(GlossaryDto glossary) throws BookShelfLoginException {
         if (!glossary.getName().isEmpty() && !glossary.getRegex().isEmpty() && service.saveGlossary(glossary)) {
             return "redirect:/glossaries/shelf";
         } else {
@@ -47,62 +49,84 @@ public class GlossControllerImpl implements GlossController {
     }
 
     @PostMapping("/remove")
-    public String removeGlossary(GlossaryToView glossary) throws BookShelfLoginException {
-        if (!glossary.getName().isEmpty() && service.deleteGlossary(glossary)) {
-            return "redirect:/glossaries/shelf";
-        } else {
-            throw new BookShelfLoginException("Ошибка ввода при удалении словаря!","/glossaries/shelf");
+    public String removeGlossary(GlossaryDto glossary) throws BookShelfLoginException {
+        try {
+            if (!glossary.getName().isEmpty()) {
+                service.getGlossary(glossary.getName());
+                service.deleteGlossary(glossary);
+                return "redirect:/glossaries/shelf";
+            } else {
+                throw new BookShelfLoginException("Ошибка ввода при удалении словаря!", "/glossaries/shelf");
+            }
+        } catch (NoSuchElementException exception) {
+            throw new BookShelfLoginException("Cловарь не найден!", "/glossaries/shelf");
         }
     }
 
-    @PostMapping("/get")
-    public String activeGloss(GlossaryToView glossary) throws BookShelfLoginException {
-        if (!glossary.getName().isEmpty() && service.setActiveByName(glossary)) {
-            return "redirect:/glossaries/glossary";
-        } else {
-            throw new BookShelfLoginException("Ошибка ввода при запросе словаря!","/glossaries/shelf");
-        }
-    }
 
-    @RequestMapping("/glossary")
-    public String getGlossary(Model model) {
-        model.addAttribute("gloss", service.getActiveGlossary().toString());
-        model.addAttribute("word", new WordToView());
-        model.addAttribute("wordsList", service.listAllWords());
-        return "glossary_words";
+    @GetMapping("/glossary")
+    public String getGlossary(@RequestParam String name, Model model) throws BookShelfLoginException {
+        try {
+            if (!name.isEmpty()) {
+                logger.info("glossaries glossary");
+                model.addAttribute("gloss", service.getGlossary(name));
+                model.addAttribute("word", new WordDto());
+                model.addAttribute("wordsList", service.listAllWords());
+                return "glossary_words";
+            } else {
+                throw new BookShelfLoginException("Ошибка ввода при запросе словаря!", "/glossaries/shelf");
+            }
+        } catch (NoSuchElementException exception) {
+            throw new BookShelfLoginException("Cловарь не найден!", "/glossaries/shelf");
+        }
     }
 
     @PostMapping("/glossary/save")
-    public String addWordValue(WordToView word) throws BookShelfLoginException {
-        if (!word.getName().isEmpty() && !word.getValue().isEmpty() && service.saveWord(word)) {
-            return "redirect:/glossaries/glossary";
+    public String addWordValue(WordDto word, Model model) throws BookShelfLoginException {
+        if (!word.getName().isEmpty() && !word.getValue().isEmpty()) {
+            service.saveWord(word);
+            model.addAttribute("gloss", service.getGlossary(word.getGlossaryName()));
+            model.addAttribute("word", new WordDto());
+            model.addAttribute("wordsList", service.listAllWords());
+            return "glossary_words";
         } else {
-            throw new BookShelfLoginException("Ошибка ввода при добавлении слова!","/glossaries/glossary");
+            throw new BookShelfLoginException("Ошибка ввода при добавлении слова!", "/glossaries/glossary", word.getGlossaryName());
         }
     }
 
     @PostMapping("/glossary/remove")
-    public String removeWordValue(WordToView word) throws BookShelfLoginException {
-        if (!word.getName().isEmpty() && service.deleteWord(word)) {
-            return "redirect:/glossaries/glossary";
-        } else {
-            throw new BookShelfLoginException("Ошибка ввода при удалении слова!","/glossaries/glossary");
+    public String removeWordValue(WordDto word, Model model) throws BookShelfLoginException {
+        try {
+            if (!word.getName().isEmpty()) {
+                service.getWord(word);
+                service.deleteWord(word);
+                model.addAttribute("gloss", service.getGlossary(word.getGlossaryName()));
+                model.addAttribute("word", new WordDto());
+                model.addAttribute("wordsList", service.listAllWords());
+                return "glossary_words";
+            } else {
+                throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossaryName());
+            }
+        } catch (NoSuchElementException exception) {
+            throw new BookShelfLoginException("Cлово не найдено!", "/glossaries/glossary", word.getGlossaryName());
         }
     }
 
-    @RequestMapping("/glossary/search")
-    public String searchWord(Model model, WordToView word) throws BookShelfLoginException {
+    @GetMapping("/glossary/search")
+    public String searchWord(Model model, WordDto word) throws BookShelfLoginException {
         try {
             if (!word.getName().isEmpty()) {
+                logger.info("glossaries glossary search");
+                model.addAttribute("glossary", new GlossaryDto());
+                model.addAttribute("glossName", word.getGlossaryName());
                 model.addAttribute("searchWord", word.getName());
-                model.addAttribute("word", new WordToView());
-                model.addAttribute("wordsList", service.getWord(word));
+                model.addAttribute("word", service.getWord(word));
                 return "search_result";
             } else {
-                throw new BookShelfLoginException("Введите слово для поиска!","/glossaries/glossary");
+                throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossaryName());
             }
         } catch (NoSuchElementException exception) {
-            throw new BookShelfLoginException("Cлово не найдено!","/glossaries/glossary");
+            throw new BookShelfLoginException("Cлово не найдено!", "/glossaries/glossary", word.getGlossaryName());
         }
     }
 }

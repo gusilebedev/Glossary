@@ -32,13 +32,14 @@
     </div>
 
     <div align="center">
-        <h2><td th:text="${gloss}"></td></h2>
+        <h2><td th:text="${gloss.getNameGloss}"></td></h2>
         <img class="login_item" th:src="@{/images/gloss_image.jpg}">
     </div>
 
     <form method="POST"  th:action="@{/glossaries/glossary/save}" th:object="${word}">
         <table border="1" cellpadding="5">
             <tr>
+                <input type="hidden" th:value="${gloss.getNameGloss}" name="glossaryName">
                 <td>
                     <input type="text" placeholder="Слово" th:field="*{name}">
                 </td>
@@ -55,6 +56,7 @@
     <form method="POST" th:action="@{/glossaries/glossary/remove}" th:object="${word}">
         <table border="1" cellpadding="5">
             <tr>
+                <input type="hidden" th:value="${gloss.getNameGloss}" name="glossaryName">
                 <td>
                     <input type="text" placeholder="Cлово" th:field="*{name}">
                 </td>
@@ -65,9 +67,10 @@
         </table>
     </form>
 
-    <form method="POST" th:action="@{/glossaries/glossary/search}" th:object="${word}">
+    <form method="GET" th:action="@{/glossaries/glossary/search}" th:object="${word}">
         <table border="1" cellpadding="5">
             <tr>
+                <input type="hidden" th:value="${gloss.getNameGloss}" name="glossaryName">
                 <td>
                     <input type="text" placeholder="Cлово" th:field="*{name}">
                 </td>

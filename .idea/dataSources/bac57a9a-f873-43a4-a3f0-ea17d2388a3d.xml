@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>555</IntrospectionStateNumber>
+      <IntrospectionStateNumber>636</IntrospectionStateNumber>
       <ServerVersion>13.12</ServerVersion>
       <StartupTime>1694008289</StartupTime>
       <TimeZones>true ACDT
@@ -1416,7 +1416,7 @@ true posixrules
 13184||10|C|G
 13184||-9223372036854775808|U|G
 13184||10|U|G</Grants>
-      <IntrospectionStateNumber>555</IntrospectionStateNumber>
+      <IntrospectionStateNumber>636</IntrospectionStateNumber>
       <ObjectId>13468</ObjectId>
       <OwnerName>admin</OwnerName>
     </database>
@@ -4729,9 +4729,9 @@ true posixrules
       <ValidatorSchema>pg_catalog</ValidatorSchema>
     </language>
     <schema id="251" parent="3" name="glossary_box">
-      <IntrospectionStateNumber>555</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2023-09-07.13:31:16.869</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-09-07.10:31:17</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>636</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2023-09-08.16:11:12.211</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-09-08.13:11:12</LocalIntrospectionTimestamp>
       <ObjectId>16482</ObjectId>
       <StateNumber>554</StateNumber>
       <OwnerName>admin</OwnerName>
@@ -6282,67 +6282,105 @@ true posixrules
     <schema id="254" parent="3" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>555</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2023-09-07.13:31:16.869</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-09-07.10:31:17</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>633</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2023-09-08.16:10:41.774</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-09-08.13:10:42</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>287</StateNumber>
       <OwnerName>admin</OwnerName>
     </schema>
-    <table id="255" parent="254" name="flyway_schema_history">
+    <table id="255" parent="251" name="glossaries">
+      <ObjectId>16483</ObjectId>
+      <StateNumber>558</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>admin</OwnerName>
+    </table>
+    <table id="256" parent="254" name="flyway_schema_history">
       <ObjectId>16450</ObjectId>
       <StateNumber>535</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>admin</OwnerName>
     </table>
-    <column id="256" parent="255" name="installed_rank">
+    <column id="257" parent="255" name="name_gloss">
+      <DasType>varchar(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>556</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="258" parent="255" name="regex">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>2</Position>
+      <StateNumber>556</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="259" parent="255" name="glossaries_pkey">
+      <ColNames>name_gloss</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16489</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>556</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <key id="260" parent="255" name="glossaries_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16490</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>556</StateNumber>
+      <UnderlyingIndexId>16489</UnderlyingIndexId>
+    </key>
+    <column id="261" parent="256" name="installed_rank">
       <DasType>integer|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>535</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="257" parent="255" name="version">
+    <column id="262" parent="256" name="version">
       <DasType>varchar(50)|0s</DasType>
       <Position>2</Position>
       <StateNumber>535</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="258" parent="255" name="description">
+    <column id="263" parent="256" name="description">
       <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>535</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="259" parent="255" name="type">
+    <column id="264" parent="256" name="type">
       <DasType>varchar(20)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>535</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="260" parent="255" name="script">
+    <column id="265" parent="256" name="script">
       <DasType>varchar(1000)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>535</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="261" parent="255" name="checksum">
+    <column id="266" parent="256" name="checksum">
       <DasType>integer|0s</DasType>
       <Position>6</Position>
       <StateNumber>535</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="262" parent="255" name="installed_by">
+    <column id="267" parent="256" name="installed_by">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StateNumber>535</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="263" parent="255" name="installed_on">
+    <column id="268" parent="256" name="installed_on">
       <DasType>timestamp|0s</DasType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -6350,21 +6388,21 @@ true posixrules
       <StateNumber>535</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="264" parent="255" name="execution_time">
+    <column id="269" parent="256" name="execution_time">
       <DasType>integer|0s</DasType>
       <NotNull>1</NotNull>
       <Position>9</Position>
       <StateNumber>535</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="265" parent="255" name="success">
+    <column id="270" parent="256" name="success">
       <DasType>boolean|0s</DasType>
       <NotNull>1</NotNull>
       <Position>10</Position>
       <StateNumber>535</StateNumber>
       <TypeId>16</TypeId>
     </column>
-    <index id="266" parent="255" name="flyway_schema_history_pk">
+    <index id="271" parent="256" name="flyway_schema_history_pk">
       <ColNames>installed_rank</ColNames>
       <ObjectId>16457</ObjectId>
       <Primary>1</Primary>
@@ -6372,13 +6410,13 @@ true posixrules
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="267" parent="255" name="flyway_schema_history_s_idx">
+    <index id="272" parent="256" name="flyway_schema_history_s_idx">
       <ColNames>success</ColNames>
       <ObjectId>16459</ObjectId>
       <StateNumber>535</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="268" parent="255" name="flyway_schema_history_pk">
+    <key id="273" parent="256" name="flyway_schema_history_pk">
       <ObjectId>16458</ObjectId>
       <Primary>1</Primary>
       <StateNumber>535</StateNumber>

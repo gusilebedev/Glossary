@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GlossaryToView {
+public class GlossaryDto {
     private String name;
     private String regex;
 }

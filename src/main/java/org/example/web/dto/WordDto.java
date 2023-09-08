@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class WordToView {
+public class WordDto {
     private String name;
     private String value;
+    private String glossaryName;
 }

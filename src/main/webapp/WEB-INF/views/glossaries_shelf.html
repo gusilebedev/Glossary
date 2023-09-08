@@ -3,81 +3,84 @@
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
     <title>Dictionaries shelf</title>
     <style>
-        #root_container{
-         position: absolute;
+        #root_container {
+            position: absolute;
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
         table {
             margin: 25px;
         }
-        th{
+
+        th {
             text-align: left;
         }
-        th,td{
+
+        th, td {
             border-bottom: 1px solid #ffffff;
         }
     </style>
 </head>
 <body>
-     <div id="root_container"  >
-         <div align="center">
-             <h2>Dictionaries shelf</h2>
-             <img class="login_item" th:src="@{/images/shelf_image.jpg}">
-         </div>
-         <form method="post"  th:action="@{/glossaries/save}" th:object="${glossary}">
-             <table border="1" cellpadding="5">
-                 <tr>
-                     <td>
-                         <input type="text" placeholder="Имя" th:field="*{name}">
-                     </td>
-                     <td>
-                         <input type="text" placeholder="Regex" th:field="*{regex}">
-                     </td>
-                     <td>
-                         <input type="submit" value="save">
-                     </td>
-                 </tr>
-             </table>
-         </form>
+<div id="root_container">
+    <div align="center">
+        <h2>Dictionaries shelf</h2>
+        <img class="login_item" th:src="@{/images/shelf_image.jpg}">
+    </div>
+    <form method="post" th:action="@{/glossaries/save}" th:object="${glossary}">
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>
+                    <input type="text" placeholder="Имя" th:field="*{name}">
+                </td>
+                <td>
+                    <input type="text" placeholder="Regex" th:field="*{regex}">
+                </td>
+                <td>
+                    <input type="submit" value="save">
+                </td>
+            </tr>
+        </table>
+    </form>
 
-         <form method="post" th:action="@{/glossaries/remove}" th:object="${glossary}">
-             <table border="1" cellpadding="5">
-                 <tr>
-                     <td>
-                         <input type="text" placeholder="Имя" th:field="*{name}">
-                     </td>
-                     <td>
-                         <input type="submit" value="remove">
-                     </td>
-                 </tr>
-             </table>
-         </form>
+    <form method="post" th:action="@{/glossaries/remove}" th:object="${glossary}">
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>
+                    <input type="text" placeholder="Имя" th:field="*{name}">
+                </td>
+                <td>
+                    <input type="submit" value="remove">
+                </td>
+            </tr>
+        </table>
+    </form>
 
-         <form method="post" th:action="@{/glossaries/get}" th:object="${glossary}">
-             <table border="1" cellpadding="5">
-                 <tr>
-                     <td>
-                         <input type="text" placeholder="Имя" th:field="*{name}">
-                     </td>
-                     <td>
-                         <input type="submit" value="  get  ">
-                     </td>
-                 </tr>
-             </table>
-         </form>
-              <table border="1" cellpadding="5">
-                  <tr>
-                      <th>словарь</th>
-                      <th>regex</th>
-                  </tr>
-                    <tr th:each="glossary : ${glossList}">
-                        <td th:text="${glossary.nameGloss}"></td>
-                        <td th:text="${glossary.regex}"></td>
-                    </tr>
-              </table>
-     </div>
+    <form method="GET" th:action="@{/glossaries/glossary?name=${glossary.name}}">
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>
+                    <input type="text" placeholder="Имя" th:object="${glossary}" th:field="*{name}">
+                </td>
+                <td>
+                    <input type="submit" value="  get  ">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>словарь</th>
+            <th>regex</th>
+        </tr>
+        <tr th:each="glossary : ${glossList}">
+            <td th:text="${glossary.getNameGloss}"></td>
+            <td th:text="${glossary.regex}"></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

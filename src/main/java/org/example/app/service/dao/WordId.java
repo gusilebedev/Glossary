@@ -2,9 +2,7 @@ package org.example.app.service.dao;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -16,6 +14,6 @@ import java.io.Serializable;
 public class WordId implements Serializable {
         private String name;
         @ManyToOne
-        private Glossary glossary;
+        private GlossaryEntity glossaryName;
     }
 

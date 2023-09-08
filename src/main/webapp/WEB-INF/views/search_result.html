@@ -3,32 +3,39 @@
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
     <title>Search Result</title>
     <style>
-        #root_container{
+        #root_container {
             position: absolute;
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
         table {
             margin: 25px;
         }
-        th{
+
+        th {
             text-align: left;
         }
-        th,td{
+
+        th, td {
             border-bottom: 1px solid #ffffff;
         }
     </style>
 </head>
 <body>
-<div id="root_container"  >
+<div id="root_container">
     <div>
-        <form method="GET" th:action="@{/glossaries/glossary}">
+        <form method="GET" th:action="@{/glossaries/glossary?name=${glossary.name}}">
+            <td>
+                <input type="hidden" th:value="${glossName}" name="name">
+            </td>
             <td>
                 <input type="submit" value="back">
             </td>
         </form>
+
     </div>
     <div align="center">
         <h2>Search Result</h2>
@@ -38,8 +45,8 @@
         <tr>
             <th>слово - определение</th>
         </tr>
-        <tr th:each="word : ${wordsList}">
-            <td th:text="${searchWord + ' - ' + word.value}"></td>
+        <tr>
+            <td th:text="${word}"></td>
         </tr>
     </table>
 </div>

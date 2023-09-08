@@ -3,28 +3,34 @@
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
     <title>Error</title>
     <style>
-        #root_container{
+        #root_container {
             position: absolute;
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
         table {
             margin: 25px;
         }
-        th{
+
+        th {
             text-align: left;
         }
-        th,td{
+
+        th, td {
             border-bottom: 1px solid #ffffff;
         }
     </style>
 </head>
 <body>
-<div id="root_container"  >
+<div id="root_container">
     <div>
-        <form method="GET" th:action="@{${urlToBack}}">
+        <form method="GET" th:action="@{${urlToBack} + '?name=' + ${glossName}}">
+            <td>
+                <input type="hidden" th:value="${glossName}" name="name">
+            </td>
             <td>
                 <input type="submit" value="back">
             </td>

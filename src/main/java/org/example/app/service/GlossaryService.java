@@ -1,16 +1,17 @@
 package org.example.app.service;
 
 import lombok.Getter;
-import org.example.app.service.dao.Glossary;
-import org.example.app.service.dao.Word;
+import org.example.app.service.dao.GlossaryEntity;
+import org.example.app.service.dao.WordEntity;
 import org.example.app.service.dao.WordId;
-import org.example.web.dto.GlossaryToView;
-import org.example.web.dto.WordToView;
+import org.example.web.dto.GlossaryDto;
+import org.example.web.dto.WordDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Getter
 @Service
 @Transactional
@@ -22,66 +23,59 @@ public class GlossaryService {
     @Autowired
     WordsRepository wordsRepository;
 
-    private Glossary activeGlossary;
-
     public GlossaryService(GlossariesRepository glossariesRepository, WordsRepository wordsRepository) {
         this.glossariesRepository = glossariesRepository;
         this.wordsRepository = wordsRepository;
     }
 
-    public boolean setActiveByName(GlossaryToView glossaryToView) {
-        activeGlossary = getGlossary(glossaryToView);
+
+    public boolean saveGlossary(GlossaryDto glossaryDto) {
+        GlossaryEntity glossaryEntity = new GlossaryEntity();
+        glossaryEntity.setNameGloss(glossaryDto.getName().trim().toLowerCase());
+        glossaryEntity.setRegex(glossaryDto.getRegex().trim());
+        glossariesRepository.save(glossaryEntity);
         return true;
     }
 
+    public List<GlossaryEntity> listAllGlossaries() {
+        return (List<GlossaryEntity>) glossariesRepository.findAll();
+    }
 
-    public boolean saveGlossary(GlossaryToView glossaryToView) {
-        Glossary glossary = new Glossary();
-        glossary.setNameGloss(glossaryToView.getName().trim().toLowerCase());
-        glossary.setRegex(glossaryToView.getRegex().trim());
-        glossariesRepository.save(glossary);
+    public GlossaryEntity getGlossary(String glossaryToView) {
+        return glossariesRepository.findById(glossaryToView.trim().toLowerCase()).get();
+    }
+
+    public boolean deleteGlossary(GlossaryDto glossaryDto) {
+        glossariesRepository.deleteById(glossaryDto.getName().trim().toLowerCase());
         return true;
     }
 
-    public List<Glossary> listAllGlossaries() {
-        return (List<Glossary>) glossariesRepository.findAll();
-    }
-
-    public Glossary getGlossary(GlossaryToView glossaryToView) {
-        return glossariesRepository.findById(glossaryToView.getName().trim().toLowerCase()).get();
-    }
-
-    public boolean deleteGlossary(GlossaryToView glossaryToView) {
-        glossariesRepository.deleteById(glossaryToView.getName().trim().toLowerCase());
-        return true;
-    }
-
-    public boolean saveWord(WordToView wordToView) {
+    public boolean saveWord(WordDto wordDto) {
         WordId wordId = new WordId();
-        wordId.setName(wordToView.getName().trim().toLowerCase());
-        wordId.setGlossary(getActiveGlossary());
-        Word word = new Word();
-        word.setId(wordId);
-        word.setValue(wordToView.getValue().trim().toLowerCase());
-        wordsRepository.save(word);
+        wordId.setName(wordDto.getName().trim().toLowerCase());
+        wordId.setGlossaryName(getGlossary(wordDto.getGlossaryName().trim().toLowerCase()));
+        WordEntity wordEntity = new WordEntity();
+        wordEntity.setId(wordId);
+        wordEntity.setValue(wordDto.getValue().trim().toLowerCase());
+        wordsRepository.save(wordEntity);
         return true;
     }
 
-    public List<Word> listAllWords() {
-        return (List<Word>) wordsRepository.findAll();
+    public List<WordEntity> listAllWords() {
+        return (List<WordEntity>) wordsRepository.findAll();
     }
 
-    public Word getWord(WordToView wordToView) {
+    public WordEntity getWord(WordDto wordDto) {
         WordId wordId = new WordId();
-        wordId.setName(wordToView.getName().trim().toLowerCase());
-        wordId.setGlossary(getActiveGlossary());
+        wordId.setName(wordDto.getName().trim().toLowerCase());
+        wordId.setGlossaryName(getGlossary(wordDto.getGlossaryName().trim().toLowerCase()));
         return wordsRepository.findById(wordId).get();
     }
 
-    public boolean deleteWord(WordToView wordToView) {
+    public boolean deleteWord(WordDto wordDto) {
         WordId wordId = new WordId();
-        wordId.setName(wordToView.getName().trim().toLowerCase());
-        wordId.setGlossary(getActiveGlossary());
+        wordId.setName(wordDto.getName().trim().toLowerCase());
+        wordId.setGlossaryName(getGlossary(wordDto.getGlossaryName().trim().toLowerCase()));
         wordsRepository.deleteById(wordId);
         return true;
     }

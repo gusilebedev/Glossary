@@ -4,9 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
@@ -17,21 +15,21 @@ import java.util.TreeMap;
 @Entity
 @Table(name = "glossaries", schema = "glossary_box")
 
-public class Glossary {
+public class GlossaryEntity {
 
     @Id
     private String nameGloss;
     private String regex;
     @Transient
-    private Map<String, Word> map;
+    private Map<String, WordEntity> map;
 
-    public Glossary() {
+    public GlossaryEntity() {
         this.map = new TreeMap<>();
     }
 
-    public boolean addWord(Word word) {
-        if (validatedLine(word.getId().getName())) {
-            map.put(word.getId().getName(), word);
+    public boolean addWord(WordEntity wordEntity) {
+        if (validatedLine(wordEntity.getId().getName())) {
+            map.put(wordEntity.getId().getName(), wordEntity);
             return true;
         }
         return false;
@@ -43,7 +41,7 @@ public class Glossary {
     }
 
 
-    public Word getWord(String word) {
+    public WordEntity getWord(String word) {
         return map.get(word);
     }
     public Map getGloss() {
