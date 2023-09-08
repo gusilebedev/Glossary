@@ -77,7 +77,7 @@
             <th>regex</th>
         </tr>
         <tr th:each="glossary : ${glossList}">
-            <td th:text="${glossary.getNameGloss}"></td>
+            <td th:text="${glossary.getName}"></td>
             <td th:text="${glossary.regex}"></td>
         </tr>
     </table>

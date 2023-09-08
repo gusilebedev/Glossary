@@ -3,7 +3,6 @@ package org.example.web.controllers;
 
 import org.apache.log4j.Logger;
 import org.example.app.service.GlossaryService;
-import org.example.app.service.dao.WordEntity;
 import org.example.app.service.exceptions.BookShelfLoginException;
 import org.example.web.dto.GlossaryDto;
 import org.example.web.dto.WordDto;
@@ -85,12 +84,12 @@ public class GlossControllerImpl implements GlossController {
     public String addWordValue(WordDto word, Model model) throws BookShelfLoginException {
         if (!word.getName().isEmpty() && !word.getValue().isEmpty()) {
             service.saveWord(word);
-            model.addAttribute("gloss", service.getGlossary(word.getGlossaryName()));
+            model.addAttribute("gloss", service.getGlossary(word.getGlossary()));
             model.addAttribute("word", new WordDto());
             model.addAttribute("wordsList", service.listAllWords());
             return "glossary_words";
         } else {
-            throw new BookShelfLoginException("Ошибка ввода при добавлении слова!", "/glossaries/glossary", word.getGlossaryName());
+            throw new BookShelfLoginException("Ошибка ввода при добавлении слова!", "/glossaries/glossary", word.getGlossary());
         }
     }
 
@@ -100,15 +99,15 @@ public class GlossControllerImpl implements GlossController {
             if (!word.getName().isEmpty()) {
                 service.getWord(word);
                 service.deleteWord(word);
-                model.addAttribute("gloss", service.getGlossary(word.getGlossaryName()));
+                model.addAttribute("gloss", service.getGlossary(word.getGlossary()));
                 model.addAttribute("word", new WordDto());
                 model.addAttribute("wordsList", service.listAllWords());
                 return "glossary_words";
             } else {
-                throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossaryName());
+                throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossary());
             }
         } catch (NoSuchElementException exception) {
-            throw new BookShelfLoginException("Cлово не найдено!", "/glossaries/glossary", word.getGlossaryName());
+            throw new BookShelfLoginException("Cлово не найдено!", "/glossaries/glossary", word.getGlossary());
         }
     }
 
@@ -118,15 +117,15 @@ public class GlossControllerImpl implements GlossController {
             if (!word.getName().isEmpty()) {
                 logger.info("glossaries glossary search");
                 model.addAttribute("glossary", new GlossaryDto());
-                model.addAttribute("glossName", word.getGlossaryName());
+                model.addAttribute("glossName", word.getGlossary());
                 model.addAttribute("searchWord", word.getName());
                 model.addAttribute("word", service.getWord(word));
                 return "search_result";
             } else {
-                throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossaryName());
+                throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossary());
             }
         } catch (NoSuchElementException exception) {
-            throw new BookShelfLoginException("Cлово не найдено!", "/glossaries/glossary", word.getGlossaryName());
+            throw new BookShelfLoginException("Cлово не найдено!", "/glossaries/glossary", word.getGlossary());
         }
     }
 }

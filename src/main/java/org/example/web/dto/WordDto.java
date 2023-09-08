@@ -8,5 +8,5 @@ import lombok.Setter;
 public class WordDto {
     private String name;
     private String value;
-    private String glossaryName;
+    private String glossary;
 }

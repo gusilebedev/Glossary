@@ -31,7 +31,7 @@ public class GlossaryService {
 
     public boolean saveGlossary(GlossaryDto glossaryDto) {
         GlossaryEntity glossaryEntity = new GlossaryEntity();
-        glossaryEntity.setNameGloss(glossaryDto.getName().trim().toLowerCase());
+        glossaryEntity.setName(glossaryDto.getName().trim().toLowerCase());
         glossaryEntity.setRegex(glossaryDto.getRegex().trim());
         glossariesRepository.save(glossaryEntity);
         return true;
@@ -53,7 +53,7 @@ public class GlossaryService {
     public boolean saveWord(WordDto wordDto) {
         WordId wordId = new WordId();
         wordId.setName(wordDto.getName().trim().toLowerCase());
-        wordId.setGlossaryName(getGlossary(wordDto.getGlossaryName().trim().toLowerCase()));
+        wordId.setGlossary(getGlossary(wordDto.getGlossary().trim().toLowerCase()));
         WordEntity wordEntity = new WordEntity();
         wordEntity.setId(wordId);
         wordEntity.setValue(wordDto.getValue().trim().toLowerCase());
@@ -68,14 +68,14 @@ public class GlossaryService {
     public WordEntity getWord(WordDto wordDto) {
         WordId wordId = new WordId();
         wordId.setName(wordDto.getName().trim().toLowerCase());
-        wordId.setGlossaryName(getGlossary(wordDto.getGlossaryName().trim().toLowerCase()));
+        wordId.setGlossary(getGlossary(wordDto.getGlossary().trim().toLowerCase()));
         return wordsRepository.findById(wordId).get();
     }
 
     public boolean deleteWord(WordDto wordDto) {
         WordId wordId = new WordId();
         wordId.setName(wordDto.getName().trim().toLowerCase());
-        wordId.setGlossaryName(getGlossary(wordDto.getGlossaryName().trim().toLowerCase()));
+        wordId.setGlossary(getGlossary(wordDto.getGlossary().trim().toLowerCase()));
         wordsRepository.deleteById(wordId);
         return true;
     }
