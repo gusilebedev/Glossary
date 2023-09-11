@@ -2,20 +2,24 @@ package org.example.app.service;
 
 import lombok.Getter;
 import org.example.app.service.dao.GlossaryEntity;
+import org.example.app.service.dao.RegexEntity;
 import org.example.app.service.dao.WordEntity;
 import org.example.app.service.dao.WordId;
+import org.example.web.builders.GlossaryBuilder;
+import org.example.web.builders.WordBuilder;
 import org.example.web.dto.GlossaryDto;
 import org.example.web.dto.WordDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
 @Service
 @Transactional
+
 public class GlossaryService {
 
     @Autowired
@@ -24,26 +28,31 @@ public class GlossaryService {
     @Autowired
     WordsRepository wordsRepository;
 
-    public GlossaryService(GlossariesRepository glossariesRepository, WordsRepository wordsRepository) {
+    @Autowired
+    RegexRepository regexRepository;
+
+    public GlossaryService(GlossariesRepository glossariesRepository, WordsRepository wordsRepository, RegexRepository regexRepository) {
         this.glossariesRepository = glossariesRepository;
         this.wordsRepository = wordsRepository;
+        this.regexRepository = regexRepository;
     }
 
 
     public boolean saveGlossary(GlossaryDto glossaryDto) {
         GlossaryEntity glossaryEntity = new GlossaryEntity();
         glossaryEntity.setName(glossaryDto.getName().trim().toLowerCase());
-        glossaryEntity.setRegex(glossaryDto.getRegex().trim());
+        RegexEntity regexEntity = new RegexEntity();
+        regexEntity.setRegex(glossaryDto.getRegex().trim());
+        regexRepository.save(regexEntity);
+        glossaryEntity.setRegexEntity(regexEntity);
         glossariesRepository.save(glossaryEntity);
         return true;
     }
 
     public List<GlossaryDto> listAllGlossaries() {
-        List <GlossaryDto> glossaries = new ArrayList<>();
+        List <GlossaryDto> glossaries = new LinkedList<>();
         glossariesRepository.findAll().forEach(glossaryEntity -> {
-            glossaries.add(new GlossaryDto().builder()
-                        .name(glossaryEntity.getName())
-                        .regex(glossaryEntity.getRegex()).build());
+            glossaries.add(new GlossaryBuilder().build(glossaryEntity));
         });
         return glossaries;
     }
@@ -53,13 +62,13 @@ public class GlossaryService {
     }
 
     public GlossaryDto getGlossaryDto(String glossary) {
-        return new GlossaryDto().builder()
-                .name(glossariesRepository.findById(glossary).get().getName())
-                .regex(glossariesRepository.findById(glossary).get().getRegex()).build();
+        return new GlossaryBuilder().build(glossariesRepository.findById(glossary.trim().toLowerCase()).get());
     }
 
     public boolean deleteGlossary(GlossaryDto glossaryDto) {
+        int id = getGlossary(glossaryDto.getName()).getRegexEntity().getId();
         glossariesRepository.deleteById(glossaryDto.getName().trim().toLowerCase());
+        regexRepository.deleteById(id);
         return true;
     }
 
@@ -74,13 +83,12 @@ public class GlossaryService {
         return true;
     }
 
-    public List<WordDto> listAllWords() {
-        List <WordDto> words = new ArrayList<>();
+    public List<WordDto> listAllWords(String glossary) {
+        List <WordDto> words = new LinkedList<>();
         wordsRepository.findAll().forEach(wordEntity -> {
-            words.add(new WordDto().builder()
-                    .name(wordEntity.getId().getName())
-                    .value(wordEntity.getValue())
-                    .glossary(wordEntity.getId().getGlossary().getName()).build());
+            if (wordEntity.getId().getGlossary().getName().equals(glossary)) {
+                words.add(new WordBuilder().build(wordEntity));
+            }
         });
         return words;
     }
@@ -89,10 +97,7 @@ public class GlossaryService {
         WordId wordId = new WordId();
         wordId.setName(wordDto.getName().trim().toLowerCase());
         wordId.setGlossary(getGlossary(wordDto.getGlossary().trim().toLowerCase()));
-        return WordDto.builder()
-                .name(wordsRepository.findById(wordId).get().getId().getName())
-                .value(wordsRepository.findById(wordId).get().getValue())
-                .glossary(wordsRepository.findById(wordId).get().getId().getGlossary().getName()).build();
+        return new WordBuilder().build(wordsRepository.findById(wordId).get());
     }
 
     public boolean deleteWord(WordDto wordDto) {

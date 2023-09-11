@@ -1,9 +1,6 @@
 package org.example.app.service.dao;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +16,11 @@ public class GlossaryEntity {
 
     @Id
     private String name;
-    private String regex;
+
+    @OneToOne
+    @JoinColumn(name = "regex")
+    private RegexEntity regexEntity;
+
     @Transient
     private Map<String, WordEntity> map;
 
@@ -58,7 +59,7 @@ public class GlossaryEntity {
 
 
     public boolean validatedLine(String line) {
-        String regex = getRegex();
+        String regex = getRegexEntity().getRegex();;
         if (line.matches(regex)) {
             return true;
         }
@@ -67,7 +68,7 @@ public class GlossaryEntity {
 
 
     public String toString() {
-        return name + " " + regex;
+        return name + " " + regexEntity.getRegex();
     }
 }
 

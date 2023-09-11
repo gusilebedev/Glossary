@@ -51,7 +51,7 @@ public class GlossControllerImpl implements GlossController {
     public String removeGlossary(GlossaryDto glossary) throws BookShelfLoginException {
         try {
             if (!glossary.getName().isEmpty()) {
-                if (service.listAllWords().isEmpty()) {
+                if (service.listAllWords(glossary.getName()).isEmpty()) {
                     service.getGlossaryDto(glossary.getName());
                     service.deleteGlossary(glossary);
                     return "redirect:/glossaries/shelf";
@@ -74,7 +74,7 @@ public class GlossControllerImpl implements GlossController {
                 logger.info("glossaries glossary");
                 model.addAttribute("gloss", service.getGlossaryDto(name));
                 model.addAttribute("word", new WordDto());
-                model.addAttribute("wordsList", service.listAllWords());
+                model.addAttribute("wordsList", service.listAllWords(name));
                 return "glossary_words";
             } else {
                 throw new BookShelfLoginException("Ошибка ввода при запросе словаря!", "/glossaries/shelf");
@@ -90,7 +90,7 @@ public class GlossControllerImpl implements GlossController {
             service.saveWord(word);
             model.addAttribute("gloss", service.getGlossaryDto(word.getGlossary()));
             model.addAttribute("word", new WordDto());
-            model.addAttribute("wordsList", service.listAllWords());
+            model.addAttribute("wordsList", service.listAllWords(word.getGlossary()));
             return "glossary_words";
         } else {
             throw new BookShelfLoginException("Ошибка ввода при добавлении слова!", "/glossaries/glossary", word.getGlossary());
@@ -105,7 +105,7 @@ public class GlossControllerImpl implements GlossController {
                 service.deleteWord(word);
                 model.addAttribute("gloss", service.getGlossaryDto(word.getGlossary()));
                 model.addAttribute("word", new WordDto());
-                model.addAttribute("wordsList", service.listAllWords());
+                model.addAttribute("wordsList", service.listAllWords(word.getGlossary()));
                 return "glossary_words";
             } else {
                 throw new BookShelfLoginException("Введите слово для поиска!", "/glossaries/glossary", word.getGlossary());
