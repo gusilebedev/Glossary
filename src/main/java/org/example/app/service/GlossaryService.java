@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -37,12 +38,24 @@ public class GlossaryService {
         return true;
     }
 
-    public List<GlossaryEntity> listAllGlossaries() {
-        return (List<GlossaryEntity>) glossariesRepository.findAll();
+    public List<GlossaryDto> listAllGlossaries() {
+        List <GlossaryDto> glossaries = new ArrayList<>();
+        glossariesRepository.findAll().forEach(glossaryEntity -> {
+            glossaries.add(new GlossaryDto().builder()
+                        .name(glossaryEntity.getName())
+                        .regex(glossaryEntity.getRegex()).build());
+        });
+        return glossaries;
     }
 
     public GlossaryEntity getGlossary(String glossaryToView) {
         return glossariesRepository.findById(glossaryToView.trim().toLowerCase()).get();
+    }
+
+    public GlossaryDto getGlossaryDto(String glossary) {
+        return new GlossaryDto().builder()
+                .name(glossariesRepository.findById(glossary).get().getName())
+                .regex(glossariesRepository.findById(glossary).get().getRegex()).build();
     }
 
     public boolean deleteGlossary(GlossaryDto glossaryDto) {
@@ -61,15 +74,25 @@ public class GlossaryService {
         return true;
     }
 
-    public List<WordEntity> listAllWords() {
-        return (List<WordEntity>) wordsRepository.findAll();
+    public List<WordDto> listAllWords() {
+        List <WordDto> words = new ArrayList<>();
+        wordsRepository.findAll().forEach(wordEntity -> {
+            words.add(new WordDto().builder()
+                    .name(wordEntity.getId().getName())
+                    .value(wordEntity.getValue())
+                    .glossary(wordEntity.getId().getGlossary().getName()).build());
+        });
+        return words;
     }
 
-    public WordEntity getWord(WordDto wordDto) {
+    public WordDto getWordDto(WordDto wordDto) {
         WordId wordId = new WordId();
         wordId.setName(wordDto.getName().trim().toLowerCase());
         wordId.setGlossary(getGlossary(wordDto.getGlossary().trim().toLowerCase()));
-        return wordsRepository.findById(wordId).get();
+        return WordDto.builder()
+                .name(wordsRepository.findById(wordId).get().getId().getName())
+                .value(wordsRepository.findById(wordId).get().getValue())
+                .glossary(wordsRepository.findById(wordId).get().getId().getGlossary().getName()).build();
     }
 
     public boolean deleteWord(WordDto wordDto) {

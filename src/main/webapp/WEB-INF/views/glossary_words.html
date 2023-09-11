@@ -86,7 +86,7 @@
                 <th>слово - определение</th>
             </tr>
             <tr th:each="word : ${wordsList}">
-                <td th:text="${word}"></td>
+                <td th:text="${word.name + ' - ' + word.value}"></td>
             </tr>
         </table>
 </div>
