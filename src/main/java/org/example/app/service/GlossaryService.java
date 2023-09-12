@@ -22,14 +22,14 @@ import java.util.List;
 
 public class GlossaryService {
 
-    @Autowired
-    GlossariesRepository glossariesRepository;
 
-    @Autowired
-    WordsRepository wordsRepository;
+    private final GlossariesRepository glossariesRepository;
 
-    @Autowired
-    RegexRepository regexRepository;
+
+    private final WordsRepository wordsRepository;
+
+
+    private final RegexRepository regexRepository;
 
     public GlossaryService(GlossariesRepository glossariesRepository, WordsRepository wordsRepository, RegexRepository regexRepository) {
         this.glossariesRepository = glossariesRepository;
